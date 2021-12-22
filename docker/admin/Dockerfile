@@ -11,4 +11,6 @@ RUN ./install.sh
 
 RUN apt install -y thunderbird
 
+RUN admin:root
+
 CMD ["echo", "Pokrenut admin"]

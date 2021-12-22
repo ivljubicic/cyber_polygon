@@ -6,12 +6,12 @@ COPY install.sh install.sh
 
 RUN chmod +x install.sh
 
-# instalacija libre offica
+# instalacija libre offica i codea
 RUN ./install.sh
 
 RUN apt install -y thunderbird
 RUN apt install -y firefox
 
-USER ceo:ceo
+USER junior:developer
 
-CMD ["echo", "Pokrenut CEO"]
+CMD ["echo", "Pokrenut ubuntu developer 2"]
