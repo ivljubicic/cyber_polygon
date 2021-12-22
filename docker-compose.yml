@@ -1,26 +1,31 @@
 version: "3"
 services:
   developer_junior:
-    build: ./docker/ubuntu_workstation
+    build: ./docker/junior_workstation
     volumes:
       - source_code_ordinary:/home/code
+    command: tail -F anything
   developer_senior:
-    build: ./docker/ubuntu_workstation
+    build: ./docker/senior_workstation
     volumes:
       - source_code_ordinary:/home/code/ordinary
       - source_code_critical:/home/code/critical
+    command: tail -F anything
   admin:
     build: ./docker/admin
+    command: tail -F anything
   ceo_workstation:
     build: ./docker/ceo
     volumes:
       - bussiness_client_data:/home/client_data
+    command: tail -F anything
   portoflio_server:
     build: ./docker/web
     ports:
       - "127.0.0.1:3000:8080"
   postfix_server:
     build: ./docker/server
+    command: tail -F anything
 
 volumes:
   source_code_critical:
