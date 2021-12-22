@@ -12,6 +12,9 @@ RUN ./install.sh
 RUN apt install -y thunderbird
 RUN apt install -y firefox
 
+RUN useradd senior
+RUN groupadd developer
+
 USER senior:developer
 
 CMD ["echo", "Pokrenut ubuntu developer 2"]
