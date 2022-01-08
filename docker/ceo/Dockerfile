@@ -12,9 +12,8 @@ RUN ./install.sh
 RUN apt install -y thunderbird
 RUN apt install -y firefox
 
-RUN useradd ceo
-RUN groupadd ceo
-
+RUN useradd -ms /bin/bash ceo
 USER ceo:ceo
+WORKDIR /home/ceo
 
 CMD ["echo", "Pokrenut CEO"]

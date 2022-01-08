@@ -12,9 +12,10 @@ RUN ./install.sh
 RUN apt install -y thunderbird
 RUN apt install -y firefox
 
-RUN useradd junior
+
+RUN useradd -ms /bin/bash junior
 RUN groupadd developer
-
 USER junior:developer
+WORKDIR /home/junior
 
-CMD ["echo", "Pokrenut ubuntu developer 2"]
+CMD ["tail", "-F", "anything"]

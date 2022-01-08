@@ -11,8 +11,8 @@ RUN ./install.sh
 
 RUN apt install -y thunderbird
 
-RUN useradd admin
-
-RUN admin:root
+# dodavanje usera
+RUN useradd -ms /bin/bash admin
+USER admin
 
 CMD ["echo", "Pokrenut admin"]

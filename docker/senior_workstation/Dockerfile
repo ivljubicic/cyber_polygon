@@ -12,9 +12,10 @@ RUN ./install.sh
 RUN apt install -y thunderbird
 RUN apt install -y firefox
 
-RUN useradd senior
+# dodavanje usera u grupu
+RUN useradd -ms /bin/bash senior
 RUN groupadd developer
-
 USER senior:developer
+WORKDIR /home/junior
 
-CMD ["echo", "Pokrenut ubuntu developer 2"]
+CMD ["tail", "-F", "anything"]
