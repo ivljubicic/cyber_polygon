@@ -16,6 +16,6 @@ RUN apt install -y firefox
 RUN useradd -ms /bin/bash senior
 RUN groupadd developer
 USER senior:developer
-WORKDIR /home/junior
+WORKDIR /home/senior
 
 CMD ["tail", "-F", "anything"]
