@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+  developer_junior:
+    build: ./docker/junior_workstation
+    volumes:
+      - source_code_ordinary:/home/code
+    #command: tail -F anything
+    networks:
+      - company_machines
+  developer_senior:
+    build: ./docker/senior_workstation
+    volumes:
+      - source_code_ordinary:/home/code/ordinary
+      - source_code_critical:/home/code/critical
+    #command: tail -F anything
+    networks:
+      - company_machines
+  admin:
+    build: ./docker/admin
+    command: tail -F anything
+    networks:
+      - company_machines
+  ceo_workstation:
+    build: ./docker/ceo
+    volumes:
+      - bussiness_client_data:/home/client_data
+    command: tail -F anything
+    networks:
+      - company_machines
+  portoflio_server:
+    build: ./docker/web
+    ports:
+      - "127.0.0.1:3000:8080"
+  postfix_server:
+    build: ./docker/server
+    command: tail -F anything
+    networks:
+      - company_machines
+  mailserver2:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    # If the FQDN for your mail-server is only two labels (eg: example.com),
+    # you can assign this entirely to `hostname` and remove `domainname`.
+    hostname: mail
+    domainname: cyberpoligon.local
+    env_file: mailserver.env
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+    volumes:
+      - ./docker-data/dms/mail-data/:/var/mail/
+      - ./docker-data/dms/mail-state/:/var/mail-state/
+      - ./docker-data/dms/mail-logs/:/var/log/mail/
+      - ./docker-data/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    stop_grace_period: 1m
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    networks:
+      company_machines:
+        # postaviti staticki ip da ga druga racunala ga znaju prepoznati
+        ipv4_address: 172.18.1.20
+
+networks:
+  company_machines:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
+
+volumes:
+  source_code_critical:
+  source_code_ordinary:
+  bussiness_client_data:
