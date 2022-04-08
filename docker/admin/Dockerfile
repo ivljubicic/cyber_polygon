@@ -15,4 +15,4 @@ RUN apt install -y thunderbird
 RUN useradd -ms /bin/bash admin
 USER admin
 
-CMD ["echo", "Pokrenut admin"]
+CMD ["tail", "-F", "anything"]

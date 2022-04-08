@@ -16,4 +16,4 @@ RUN useradd -ms /bin/bash ceo
 USER ceo:ceo
 WORKDIR /home/ceo
 
-CMD ["echo", "Pokrenut CEO"]
+CMD ["tail", "-F", "anything"]
