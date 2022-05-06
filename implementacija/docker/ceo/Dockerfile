@@ -9,8 +9,8 @@ RUN chmod +x install.sh
 # instalacija libre offica
 RUN ./install.sh
 
-RUN apt install -y thunderbird
-RUN apt install -y firefox
+RUN apt-get install -y thunderbird
+RUN apt-get install -y firefox
 
 RUN useradd -ms /bin/bash ceo
 USER ceo:ceo

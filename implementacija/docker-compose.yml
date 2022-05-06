@@ -6,34 +6,43 @@ services:
     volumes:
       - source_code_ordinary:/home/code
     restart: always
+    command: tail -F anything
     networks:
       - company_machines
   developer_senior:
     build: ./docker/senior_workstation
+    command: tail -F anything
     volumes:
       - source_code_ordinary:/home/code/ordinary
       - source_code_critical:/home/code/critical
+      - /tmp/.X11-unix:/tmp/.X11-unix
     restart: always
+    ports:
+      - "5900:5900"
     networks:
       - company_machines
   admin:
     build: ./docker/admin
+    command: tail -F anything
     restart: always
     networks:
       - company_machines
   ceo_workstation:
     build: ./docker/ceo
+    command: tail -F anything
     volumes:
       - bussiness_client_data:/home/client_data
     restart: always
     networks:
       - company_machines
   portoflio_server:
+    command: tail -F anything
     build: ./docker/web
     restart: always
     ports:
       - "3000:8080"
   mailserver2:
+    command: tail -F anything
     image: docker.io/mailserver/docker-mailserver:latest
     container_name: mailserver
     # If the FQDN for your mail-server is only two labels (eg: example.com),
@@ -45,11 +54,11 @@ services:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
     ports:
-      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
-      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
-      - "465:465"  # ESMTP (implicit TLS)
-      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
-      - "993:993"  # IMAP4 (implicit TLS)
+      - "25:25" # SMTP  (explicit TLS => STARTTLS)
+      - "143:143" # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465" # ESMTP (implicit TLS)
+      - "587:587" # ESMTP (explicit TLS => STARTTLS)
+      - "993:993" # IMAP4 (implicit TLS)
     volumes:
       - ./docker-data/dms/mail-data/:/var/mail/
       - ./docker-data/dms/mail-state/:/var/mail-state/
