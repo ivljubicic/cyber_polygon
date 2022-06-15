@@ -5,10 +5,13 @@ services:
     build: ./docker/junior_workstation
     volumes:
       - source_code_ordinary:/home/code
+      - /tmp/.X11-unix:/tmp/.X11-unix
     restart: always
     command: tail -F anything
     networks:
       - company_machines
+    extra_hosts:
+      - "cyberpoligon.local:172.19.1.20"
   developer_senior:
     build: ./docker/senior_workstation
     command: tail -F anything
@@ -21,6 +24,8 @@ services:
       - "5900:5900"
     networks:
       - company_machines
+    extra_hosts:
+      - "cyberpoligon.local:172.19.1.20"
   admin:
     build: ./docker/admin
     command: tail -F anything
@@ -42,7 +47,6 @@ services:
     ports:
       - "3000:8080"
   mailserver2:
-    command: tail -F anything
     image: docker.io/mailserver/docker-mailserver:latest
     container_name: mailserver
     # If the FQDN for your mail-server is only two labels (eg: example.com),
@@ -73,14 +77,14 @@ services:
     networks:
       company_machines:
         # postaviti staticki ip da ga druga racunala ga znaju prepoznati
-        ipv4_address: 172.18.1.20
+        ipv4_address: 172.19.1.20
 
 networks:
   company_machines:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.1.0/24
+        - subnet: 172.19.1.0/24
 
 volumes:
   source_code_critical:
