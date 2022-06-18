@@ -6,7 +6,7 @@ rm -f packages.microsoft.gpg
 
 apt install apt-transport-https
 apt update
-apt install -y code -v 1.57.1
+apt install -y code -v 1.57.0
 
 # install libre office
 add-apt-repository ppa:libreoffice/ppa

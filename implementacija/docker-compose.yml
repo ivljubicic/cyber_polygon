@@ -12,6 +12,8 @@ services:
       - company_machines
     extra_hosts:
       - "cyberpoligon.local:172.19.1.20"
+    ports:
+      - "22:22" #ssh
   developer_senior:
     build: ./docker/senior_workstation
     command: tail -F anything
