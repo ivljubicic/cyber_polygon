@@ -4,7 +4,7 @@ services:
   developer_junior:
     build: ./docker/junior_workstation
     volumes:
-      - source_code_ordinary:/home/code
+      - source_code_ordinary:/home/junior/code
       - /tmp/.X11-unix:/tmp/.X11-unix
     restart: always
     command: tail -F anything
@@ -12,12 +12,14 @@ services:
       - company_machines
     extra_hosts:
       - "cyberpoligon.local:172.19.1.20"
+    ports:
+      - "8080:8080"
   developer_senior:
     build: ./docker/senior_workstation
     command: tail -F anything
     volumes:
-      - source_code_ordinary:/home/code/ordinary
-      - source_code_critical:/home/code/critical
+      - source_code_ordinary:/home/senior/code/ordinary
+      - source_code_critical:/home/senior/code/critical
       - /tmp/.X11-unix:/tmp/.X11-unix
     restart: always
     ports:
@@ -36,7 +38,7 @@ services:
     build: ./docker/ceo
     command: tail -F anything
     volumes:
-      - bussiness_client_data:/home/client_data
+      - bussiness_client_data:/home/ceo/client_data
     restart: always
     networks:
       - company_machines
@@ -49,20 +51,16 @@ services:
   mailserver2:
     image: docker.io/mailserver/docker-mailserver:latest
     container_name: mailserver
-    # If the FQDN for your mail-server is only two labels (eg: example.com),
-    # you can assign this entirely to `hostname` and remove `domainname`.
     hostname: mail
     domainname: cyberpoligon.local
     env_file: mailserver.env
-    # More information about the mail-server ports:
     # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
-    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
     ports:
-      - "25:25" # SMTP  (explicit TLS => STARTTLS)
-      - "143:143" # IMAP4 (explicit TLS => STARTTLS)
-      - "465:465" # ESMTP (implicit TLS)
-      - "587:587" # ESMTP (explicit TLS => STARTTLS)
-      - "993:993" # IMAP4 (implicit TLS)
+      - "25:25" # SMTP  
+      - "143:143" # IMAP4 
+      - "465:465" # ESMTP 
+      - "587:587" # ESMTP 
+      - "993:993" # IMAP4
     volumes:
       - ./docker-data/dms/mail-data/:/var/mail/
       - ./docker-data/dms/mail-state/:/var/mail-state/
@@ -76,7 +74,6 @@ services:
       - SYS_PTRACE
     networks:
       company_machines:
-        # postaviti staticki ip da ga druga racunala ga znaju prepoznati
         ipv4_address: 172.19.1.20
 
 networks:
